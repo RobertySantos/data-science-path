@@ -14,7 +14,7 @@ playground/
 02_Learning/Python-Studies/TripleTen/Testes/
 
 # Ocultar o README de introdução pessoal (se for o caso)
-README.md
+roberty-data/
 
 # Caches de Python
-__pycache__/*.un~
+__pycache__/*.un~roberty-data/
