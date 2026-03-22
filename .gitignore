@@ -10,4 +10,11 @@ pyvenv.cfg
 __pycache__/
 playground/
 *~
-*.un~
+# Ocultar pasta de testes do GitHub
+02_Learning/Python-Studies/TripleTen/Testes/
+
+# Ocultar o README de introdução pessoal (se for o caso)
+README.md
+
+# Caches de Python
+__pycache__/*.un~
