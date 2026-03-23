@@ -2,52 +2,21 @@ import pandas as pd
 import scipy.stats
 import streamlit as st
 import time
+import plotly.express as px
+from pathlib import Path
 
-# estas são variáveis persistentes preservadas à medida que o Streamlin executa novamente esse script
-if 'experiment_no' not in st.session_state:
-    st.session_state['experiment_no'] = 0
+path = Path(__file__).parent / 'data' / 'vehicles.csv' # caminho para o arquivo de dados    
+vehicles_data = pd.read_csv(path)#lendos os dados de veículos
+st.title('Análise de Veículos Usados') # título do app
+st.write('Este aplicativo analisa dados de veículos usados para ajudar os compradores a tomar decisões informadas.') # descrição do app
+st.header('Visão Geral dos Dados') # seção de visão geral dos dados
 
-if 'df_experiment_results' not in st.session_state:
-    st.session_state['df_experiment_results'] = pd.DataFrame(columns=['no', 'iterations', 'mean'])
+build_histogram = st.checkbox('Exibir Histograma de Quilometragem') # checkbox para exibir o histograma
+if build_histogram: #se a caixa de seleção for marcada
+    fig = px.histogram(vehicles_data, x="odometer", nbins=50, title='Histograma de Quilometragem') # criar um histograma
+    st.plotly_chart(fig) # exibindo o histograma
 
-st.header('Jogando uma moeda')
-
-chart = st.line_chart([0.5])
-
-def toss_coin(n):
-
-    trial_outcomes = scipy.stats.bernoulli.rvs(p=0.5, size=n)
-
-    mean = None
-    outcome_no = 0
-    outcome_1_count = 0
-
-    for r in trial_outcomes:
-        outcome_no +=1
-        if r == 1:
-            outcome_1_count += 1
-        mean = outcome_1_count / outcome_no
-        chart.add_rows([mean])
-        time.sleep(0.05)
-
-    return mean
-
-number_of_trials = st.slider('Número de tentativas?', 1, 1000, 10)
-start_button = st.button('Executar')
-
-if start_button:
-    st.write(f'Executando o experimento de {number_of_trials} tentativas.')
-    st.session_state['experiment_no'] += 1
-    mean = toss_coin(number_of_trials)
-    st.session_state['df_experiment_results'] = pd.concat([
-        st.session_state['df_experiment_results'],
-        pd.DataFrame(data=[[st.session_state['experiment_no'],
-                            number_of_trials,
-                            mean]],
-                     columns=['no', 'iterations', 'mean'])
-        ],
-        axis=0)
-    st.session_state['df_experiment_results'] = \
-        st.session_state['df_experiment_results'].reset_index(drop=True)
-
-st.write(st.session_state['df_experiment_results'])
+build_scatter = st.checkbox('Exibir Gráfico de Dispersão de Preço vs Quilometragem') # checkbox para exibir o gráfico de dispersão
+if build_scatter: # se a caixa de seleção for marcada
+    fig = px.scatter(vehicles_data, x="odometer", y="price", title='Preço vs Quilometragem') # criar um gráfico de dispersão
+    st.plotly_chart(fig) # exibindo o gráfico de dispersão
