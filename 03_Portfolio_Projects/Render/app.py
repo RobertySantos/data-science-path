@@ -5,7 +5,7 @@ import time
 import plotly.express as px
 from pathlib import Path
 
-path = Path(__file__).parent / 'data' / 'vehicles.csv' # caminho para o arquivo de dados    
+path = Path(__file__).parent / 'data' / 'vehicles_cleaned.csv' # caminho para o arquivo de dados    
 vehicles_data = pd.read_csv(path)#lendos os dados de veículos
 st.title('Análise de Veículos Usados') # título do app
 st.write('Este aplicativo analisa dados de veículos usados para ajudar os compradores a tomar decisões informadas.') # descrição do app
